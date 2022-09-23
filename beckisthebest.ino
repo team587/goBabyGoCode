@@ -63,7 +63,7 @@ void loop() {
 
 //Creates a dead area where values around a specific range will alyaws set x and y to joystickDeadValue, else it will return the actual axis value.
 int deadArea(float valueN) {
-  if (valueN >= 440 && valueN <= 600) {
+  if (valueN >= 380 && valueN <= 660) {
     return joystickDeadValue;
   }
   return valueN;
@@ -93,6 +93,10 @@ int movement(float xValue, float yValue) {
    Serial.print(xValue);
    Serial.print(", yValue = ");
    Serial.print(yValue);
+   Serial.print(", xSpeed = ");
+   Serial.print(xSpeed);
+   Serial.print(", ySpeed = ");
+   Serial.println(ySpeed);
    
   if ((xValue > joystickDeadValue && yValue == joystickDeadValue)) { //rotate left
     analogWrite(motor1PinR, 0);
@@ -108,9 +112,9 @@ int movement(float xValue, float yValue) {
     digitalWrite(led1Red, LOW);
     digitalWrite(led2Red, LOW);
   } else if (xValue < joystickDeadValue && yValue == joystickDeadValue) { //rotate right
-    analogWrite(motor1PinR, /*leftValue*/ ySpeed);
+    analogWrite(motor1PinR, /*leftValue*/ xSpeed);
     analogWrite(motor1PinL, 0);
-    analogWrite(motor2PinR, ySpeed);
+    analogWrite(motor2PinR, xSpeed);
     analogWrite(motor2PinL, /*leftValue*/ 0);
     digitalWrite(led1Green, LOW);
     digitalWrite(led2Green, LOW);
@@ -119,10 +123,10 @@ int movement(float xValue, float yValue) {
     digitalWrite(led1Red, HIGH);
     digitalWrite(led2Red, HIGH);
   } else if (xValue == joystickDeadValue && yValue < joystickDeadValue) { //backwards
-    analogWrite(motor1PinR, xSpeed);
+    analogWrite(motor1PinR, ySpeed);
     analogWrite(motor1PinL, 0);
     analogWrite(motor2PinR, 0);
-    analogWrite(motor2PinL, xSpeed);
+    analogWrite(motor2PinL, ySpeed);
     //Serial.println(leftValue);
     Serial.println(-1 * ySpeed);
     digitalWrite(led1Green, LOW);
@@ -253,8 +257,5 @@ int movement(float xValue, float yValue) {
     digitalWrite(led1Red, LOW);
     digitalWrite(led2Red, LOW);
   }
-  Serial.print(", xSpeed = ");
-   Serial.print(xSpeed);
-   Serial.print(", ySpeed = ");
-   Serial.println(ySpeed);
+  
 }
